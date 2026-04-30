@@ -3,95 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نماء | NAMAA AI</title>
+    <title>NAMAA | نماء</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #1b4332; --s: #2d6a4f; --a: #b7e4c7; }
-        body { margin: 0; font-family: 'Tajawal', sans-serif; background: #f0f4f2; direction: rtl; display: flex; justify-content: center; }
-        #app { width: 100%; max-width: 400px; height: 100vh; background: #fff; position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        :root { --p: #1b4332; --s: #2d6a4f; --a: #b7e4c7; --bg: #f8fbf9; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Tajawal', sans-serif; background: var(--bg); overflow: hidden; }
         
-        /* شاشة التحميل */
-        #splash { position: absolute; inset: 0; background: var(--p); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
-        .loader { width: 40px; height: 40px; border: 4px solid #fff; border-top-color: var(--a); border-radius: 50%; animation: spin 1s linear infinite; }
-        
-        /* الهيدر */
-        header { background: var(--p); padding: 40px 20px 20px; color: white; border-radius: 0 0 25px 25px; display: flex; justify-content: space-between; align-items: center; }
-        .avatar { width: 40px; height: 40px; background: var(--a); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        
-        /* البطاقات */
-        .card { background: white; margin: 15px; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .stats { display: flex; justify-content: space-around; margin-top: -30px; border: 1px solid #eee; }
-        
-        /* الماسح الضوئي */
-        .scan-btn { background: var(--p); color: white; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 20px auto; border: 5px solid var(--a); cursor: pointer; transition: 0.3s; }
-        .scan-btn:active { transform: scale(0.9); }
-        
-        /* المنيو السفلي */
-        nav { position: absolute; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
-        nav div { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #777; }
-        .active-nav { color: var(--p); font-weight: bold; }
+        #app { width: 100%; max-width: 450px; height: 100vh; background: white; margin: auto; position: relative; display: flex; flex-direction: column; }
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        .hide { opacity: 0; pointer-events: none; }
+        /* الهيدر والقائمة الجانبية */
+        header { background: var(--p); padding: 50px 20px 25px; color: white; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 20px 20px; z-index: 10; }
+        .menu-btn { font-size: 24px; cursor: pointer; padding: 5px; }
+        .brand { font-weight: bold; font-size: 20px; letter-spacing: 1px; }
+        
+        /* القائمة الجانبية المخفية */
+        #side-menu { position: absolute; right: -100%; top: 0; width: 70%; height: 100%; background: white; z-index: 100; transition: 0.4s; box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding: 60px 20px; }
+        #side-menu.open { right: 0; }
+        .menu-item { padding: 15px; border-bottom: 1px solid #eee; color: var(--p); font-weight: bold; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; display: none; }
+        .overlay.show { display: block; }
+
+        /* المحتوى المتغير */
+        .content-area { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; transition: 0.3s; }
+        .page { display: none; animation: fadeIn 0.4s forwards; }
+        .page.active { display: block; }
+
+        /* البطاقات والجماليات */
+        .card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
+        .stats-row { display: flex; justify-content: space-around; margin-top: -40px; background: white; border-radius: 15px; padding: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        
+        /* زر الكاميرا التفاعلي */
+        .scan-container { text-align: center; margin: 30px 0; }
+        .scan-circle { width: 100px; height: 100px; background: var(--p); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 40px; border: 6px solid var(--a); cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(27,67,50,0.3); }
+        .scan-circle:active { transform: scale(0.9); }
+
+        /* شريط التنقل السفلي */
+        nav { position: absolute; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; box-shadow: 0 -5px 15px rgba(0,0,0,0.02); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #888; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--p); font-weight: bold; }
+        .nav-item span { font-size: 22px; margin-bottom: 4px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="app">
-        <div id="splash">
-            <div style="font-size: 40px; margin-bottom: 15px;">🌱</div>
-            <h2 style="color: white;">نماء NAMAA</h2>
-            <div class="loader"></div>
+<div id="app">
+    <div id="side-menu">
+        <div class="menu-item">👤 الملف الشخصي</div>
+        <div class="menu-item">🌱 سجل الشتلات</div>
+        <div class="menu-item">📍 خريطة نماء</div>
+        <div class="menu-item" onclick="toggleMenu()">❌ إغلاق القائمة</div>
+    </div>
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <header>
+        <div class="menu-btn" onclick="toggleMenu()">☰</div>
+        <div class="brand">NAMAA | نماء</div>
+        <div style="width: 24px;"></div> </header>
+
+    <div class="content-area">
+        <div id="home" class="page active">
+            <div class="stats-row">
+                <div style="text-align: center;">
+                    <div style="color: var(--p); font-weight: bold; font-size: 18px;">1,250</div>
+                    <div style="font-size: 10px; color: #666;">نقاط نماء</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="color: var(--p); font-weight: bold; font-size: 18px;">40%</div>
+                    <div style="font-size: 10px; color: #666;">توفير مياه</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="color: var(--p);">المساعد الذكي ✨</h3>
+                <p style="font-size: 14px; color: #666; line-height: 1.6;">استخدم كاميرا نماء للتعرف على الأشجار المحلية وتقليل الهدر المائي.</p>
+            </div>
+
+            <div class="scan-container">
+                <div class="scan-circle" onclick="startScan()">📸</div>
+                <p style="margin-top: 10px; font-weight: bold; color: var(--s);">اضغط للفحص الذكي</p>
+            </div>
+
+            <div class="card" style="background: #eef7f2; border: none; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: bold; color: var(--p);">هدية من نماء 🎁</div>
+                    <div style="font-size: 12px; color: var(--s);">كوبون خصم 15% للمشاتل</div>
+                </div>
+                <button style="background: var(--p); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-family: inherit;">استلام</button>
+            </div>
         </div>
 
-        <header>
-            <div>
-                <div style="font-size: 12px; opacity: 0.8;">مرحباً بك</div>
-                <div style="font-weight: bold;">أحمد محمد</div>
-            </div>
-            <div class="avatar">👤</div>
-        </header>
-
-        <div class="card stats">
-            <div style="text-align: center;">
-                <div style="color: var(--p); font-weight: bold;">1,250</div>
-                <div style="font-size: 10px; color: #999;">نقاط نماء</div>
-            </div>
-            <div style="width: 1px; background: #eee;"></div>
-            <div style="text-align: center;">
-                <div style="color: var(--p); font-weight: bold;">40%</div>
-                <div style="font-size: 10px; color: #999;">توفير مياه</div>
-            </div>
+        <div id="rewards" class="page">
+            <h3 style="color: var(--p);">مركز المكافآت 🏆</h3>
+            <div class="card">🥇 وسام صديق البيئة - 2000 نقطة</div>
+            <div class="card">🌳 شتلة مجانية - 500 نقطة</div>
+            <div class="card">💧 مرشد ري ذكي - 1500 نقطة</div>
         </div>
 
-        <div style="padding: 0 20px; margin-top: 20px;">
-            <h3 style="color: #333;">المساعد الذكي ✨</h3>
-            <p style="font-size: 13px; color: #666; line-height: 1.6;">وجه الكاميرا نحو أي نبتة لمعرفة فصيلتها، حالتها الصحية، وكمية الري المثالية لها.</p>
+        <div id="reports" class="page">
+            <h3 style="color: var(--p);">تقارير الاستدامة 📊</h3>
+            <div class="card">لقد ساهمت في توفير 300 لتر من المياه هذا الشهر!</div>
+            <div class="card">أكثر الأشجار التي فحصتها: السدر.</div>
         </div>
-
-        <div class="scan-btn" onclick="doScan()">📸</div>
-        <p style="text-align: center; font-size: 12px; color: var(--s);">اضغط للبدء بالفحص الذكي</p>
-
-        <div class="card" style="background: var(--a); border: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 14px; font-weight: bold; color: var(--p);">🎁 لديك مكافأة جاهزة!</span>
-                <button style="background: var(--p); color: white; border: none; padding: 5px 15px; border-radius: 10px;">استلام</button>
-            </div>
-        </div>
-
-        <nav>
-            <div class="active-nav"><span>🏠</span>الرئيسية</div>
-            <div><span>🏆</span>الجوائز</div>
-            <div><span>📊</span>التقارير</div>
-            <div><span>⚙️</span>الإعدادات</div>
-        </nav>
     </div>
 
-    <script>
-        setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 2000);
-        function doScan() {
-            alert("🔍 جاري الفحص بالذكاء الاصطناعي...\n\nالنتيجة: شجرة سمر (Acacia)\nالحالة: تحتاج ري بعد يومين\nالمكافأة: +50 نقطة نماء 🌿");
-        }
-    </script>
+    <nav>
+        <div class="nav-item active" onclick="showPage('home', this)"><span>🏠</span>الرئيسية</div>
+        <div class="nav-item" onclick="showPage('rewards', this)"><span>🏆</span>الجوائز</div>
+        <div class="nav-item" onclick="showPage('reports', this)"><span>📊</span>التقارير</div>
+        <div class="nav-item" onclick="toggleMenu()"><span>⚙️</span>الإعدادات</div>
+    </nav>
+</div>
+
+<script>
+    // فتح وإغلاق القائمة الجانبية
+    function toggleMenu() {
+        document.getElementById('side-menu').classList.toggle('open');
+        document.querySelector('.overlay').classList.toggle('show');
+    }
+
+    // التنقل بين الصفحات
+    function showPage(pageId, element) {
+        // إخفاء كل الصفحات
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        // إظهار الصفحة المطلوبة
+        document.getElementById(pageId).classList.add('active');
+        
+        // تحديث شكل الأزرار السفلية
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        element.classList.add('active');
+    }
+
+    // محاكاة الفحص
+    function startScan() {
+        const btn = document.querySelector('.scan-circle');
+        btn.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+            btn.style.transform = 'scale(1)';
+            alert("🔍 تحليل NAMAA AI:\n\nالنوع: شجرة غاف\nالحالة: ممتازة\nنصيحة: تحتاج للري كل 3 أيام في هذا الجو.\nالمكافأة: +20 نقطة نماء 🌱");
+        }, 300);
+    }
+</script>
+
 </body>
 </html>
