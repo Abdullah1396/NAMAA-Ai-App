@@ -1,0 +1,28 @@
+:root {
+  --primary: #1b4332;
+  --accent: #b7e4c7;
+  --grad: linear-gradient(135deg, #081c15 0%, #1b4332 100%);
+}
+
+body { margin: 0; background: #f0f4f2; font-family: sans-serif; display: flex; justify-content: center; direction: rtl; }
+
+#app { width: 380px; height: 800px; background: var(--grad); border-radius: 40px; position: relative; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.4); border: 8px solid #222; }
+
+.sidebar { position: absolute; right: -100%; top: 0; width: 80%; height: 100%; background: rgba(8, 28, 21, 0.98); backdrop-filter: blur(20px); z-index: 1000; transition: 0.4s; padding: 40px 20px; color: white; }
+.sidebar.active { right: 0; }
+
+header { padding: 40px 20px 10px; display: flex; justify-content: space-between; color: white; }
+.points-pill { background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 50px; border: 1px solid #ffffff33; }
+
+.glass-card { margin: 20px; padding: 20px; border-radius: 20px; background: rgba(255,255,255,0.1); border: 1px solid #ffffff22; color: white; }
+
+.scanner-container { display: flex; justify-content: center; margin: 40px 0; }
+.scan-outer { width: 160px; height: 160px; border-radius: 50%; padding: 10px; background: conic-gradient(from 0deg, var(--accent), transparent); animation: rotate 3s linear infinite; }
+.scan-inner { width: 100%; height: 100%; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--primary); font-weight: bold; }
+
+.hidden { display: none; }
+.reward-card, .merchant-card { background: white; margin: 15px 20px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; }
+
+.bottom-bar { position: absolute; bottom: 0; width: 100%; height: 75px; background: rgba(255,255,255,0.95); display: flex; justify-content: space-around; align-items: center; }
+
+@keyframes rotate { 100% { transform: rotate(360deg); } }
