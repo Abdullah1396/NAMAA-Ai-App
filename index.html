@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAMAA - نماء</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="sidebar" class="sidebar">
+            <button class="close-btn" onclick="toggleMenu()">×</button>
+            <div class="user-profile">
+                <div class="avatar">👤</div>
+                <h3>أحمد محمد</h3>
+                <p>خبير استدامة</p>
+            </div>
+            <nav class="side-nav">
+                <a href="#">👤 الملف الشخصي</a>
+                <a href="#">📊 إحصائياتي</a>
+                <a href="#" onclick="showSection('partner-dash')">🤝 بوابة الشركاء</a>
+            </nav>
+        </div>
+
+        <header>
+            <button class="menu-trigger" onclick="toggleMenu()">☰</button>
+            <div class="logo">نماء <small>NAMAA</small></div>
+            <div class="points-pill" onclick="showSection('rewards-center')">
+                <span id="points">1,250</span> 🌿
+            </div>
+        </header>
+
+        <main id="main-scroll">
+            <section id="home-section" class="active">
+                <div class="glass-card ads-slider">
+                    <span class="badge">مميز</span>
+                    <h4>خصم 30% من "مشاتل نجد"</h4>
+                    <p>استخدم كود: NAMAA2026</p>
+                </div>
+
+                <div class="scanner-container">
+                    <div class="scan-outer" onclick="startScanning()">
+                        <div class="scan-inner">
+                            <span class="icon">📸</span>
+                            <p>ابدأ الفحص</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="rewards-center" class="hidden">
+                <h2 class="section-title">مركز الجوائز 🏆</h2>
+                <div class="reward-card">
+                    <h3>قسيمة 100 ريال</h3>
+                    <button class="redeem-btn">1000 ن</button>
+                </div>
+            </section>
+
+            <section id="partner-dash" class="hidden">
+                <h2 class="section-title">بوابة الشركاء 💼</h2>
+                <div class="merchant-card">
+                    <input type="text" placeholder="عنوان العرض...">
+                    <button class="action-btn">نشر العرض</button>
+                </div>
+            </section>
+        </main>
+
+        <nav class="bottom-bar">
+            <button onclick="showSection('home-section')">🏠</button>
+            <button onclick="showSection('rewards-center')">🏆</button>
+            <button onclick="showSection('partner-dash')">💼</button>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
