@@ -4,76 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نماء | NAMAA AI</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --p: #1b4332; --s: #2d6a4f; --a: #b7e4c7; }
+        body { margin: 0; font-family: 'Tajawal', sans-serif; background: #f0f4f2; direction: rtl; display: flex; justify-content: center; }
+        #app { width: 100%; max-width: 400px; height: 100vh; background: #fff; position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        
+        /* شاشة التحميل */
+        #splash { position: absolute; inset: 0; background: var(--p); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
+        .loader { width: 40px; height: 40px; border: 4px solid #fff; border-top-color: var(--a); border-radius: 50%; animation: spin 1s linear infinite; }
+        
+        /* الهيدر */
+        header { background: var(--p); padding: 40px 20px 20px; color: white; border-radius: 0 0 25px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .avatar { width: 40px; height: 40px; background: var(--a); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        
+        /* البطاقات */
+        .card { background: white; margin: 15px; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .stats { display: flex; justify-content: space-around; margin-top: -30px; border: 1px solid #eee; }
+        
+        /* الماسح الضوئي */
+        .scan-btn { background: var(--p); color: white; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 20px auto; border: 5px solid var(--a); cursor: pointer; transition: 0.3s; }
+        .scan-btn:active { transform: scale(0.9); }
+        
+        /* المنيو السفلي */
+        nav { position: absolute; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
+        nav div { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #777; }
+        .active-nav { color: var(--p); font-weight: bold; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .hide { opacity: 0; pointer-events: none; }
+    </style>
 </head>
 <body>
 
-    <div id="splash-screen">
-        <img src="logo.png" class="splash-logo">
-        <div class="loader"></div>
-        <p>نُحيي أرضنا بذكاء...</p>
-    </div>
+    <div id="app">
+        <div id="splash">
+            <div style="font-size: 40px; margin-bottom: 15px;">🌱</div>
+            <h2 style="color: white;">نماء NAMAA</h2>
+            <div class="loader"></div>
+        </div>
 
-    <div id="app" class="hidden">
         <header>
-            <div class="user-info">
-                <div class="avatar">👤</div>
-                <div>
-                    <span>مرحباً،</span>
-                    <strong>أحمد محمد</strong>
-                </div>
+            <div>
+                <div style="font-size: 12px; opacity: 0.8;">مرحباً بك</div>
+                <div style="font-weight: bold;">أحمد محمد</div>
             </div>
-            <div class="logo-top">
-                <img src="logo.png" alt="NAMAA">
-            </div>
+            <div class="avatar">👤</div>
         </header>
 
-        <main>
-            <div class="stats-card">
-                <div class="stat-item">
-                    <span class="label">نقاطك</span>
-                    <span class="value">1,250</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="label">توفير المياه</span>
-                    <span class="value">40%</span>
-                </div>
+        <div class="card stats">
+            <div style="text-align: center;">
+                <div style="color: var(--p); font-weight: bold;">1,250</div>
+                <div style="font-size: 10px; color: #999;">نقاط نماء</div>
             </div>
+            <div style="width: 1px; background: #eee;"></div>
+            <div style="text-align: center;">
+                <div style="color: var(--p); font-weight: bold;">40%</div>
+                <div style="font-size: 10px; color: #999;">توفير مياه</div>
+            </div>
+        </div>
 
-            <section class="scanner-box">
-                <div class="scanner-info">
-                    <h3>المساعد الذكي 🌿</h3>
-                    <p>وجه الكاميرا نحو النبتة للتعرف عليها وتقييم استهلاكها للماء</p>
-                </div>
-                
-                <div class="scan-window" onclick="startScanning()">
-                    <div class="laser-line"></div>
-                    <div class="scan-hint">اضغط للمسح الضوئي</div>
-                </div>
-            </section>
+        <div style="padding: 0 20px; margin-top: 20px;">
+            <h3 style="color: #333;">المساعد الذكي ✨</h3>
+            <p style="font-size: 13px; color: #666; line-height: 1.6;">وجه الكاميرا نحو أي نبتة لمعرفة فصيلتها، حالتها الصحية، وكمية الري المثالية لها.</p>
+        </div>
 
-            <section class="quick-rewards">
-                <div class="section-header">
-                    <h4>مكافآت قريبة منك</h4>
-                    <a href="#">الكل</a>
-                </div>
-                <div class="reward-pill">
-                    <span>🎁 خصم 20% لدى مشاتل الرياض</span>
-                    <button>احصل</button>
-                </div>
-            </section>
-        </main>
+        <div class="scan-btn" onclick="doScan()">📸</div>
+        <p style="text-align: center; font-size: 12px; color: var(--s);">اضغط للبدء بالفحص الذكي</p>
 
-        <nav class="nav-bar">
-            <button class="nav-btn active">🏠<span>الرئيسية</span></button>
-            <button class="nav-btn">📊<span>التقارير</span></button>
-            <button class="nav-btn">🏆<span>الجوائز</span></button>
-            <button class="nav-btn">⚙️<span>الإعدادات</span></button>
+        <div class="card" style="background: var(--a); border: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 14px; font-weight: bold; color: var(--p);">🎁 لديك مكافأة جاهزة!</span>
+                <button style="background: var(--p); color: white; border: none; padding: 5px 15px; border-radius: 10px;">استلام</button>
+            </div>
+        </div>
+
+        <nav>
+            <div class="active-nav"><span>🏠</span>الرئيسية</div>
+            <div><span>🏆</span>الجوائز</div>
+            <div><span>📊</span>التقارير</div>
+            <div><span>⚙️</span>الإعدادات</div>
         </nav>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        setTimeout(() => { document.getElementById('splash').classList.add('hide'); }, 2000);
+        function doScan() {
+            alert("🔍 جاري الفحص بالذكاء الاصطناعي...\n\nالنتيجة: شجرة سمر (Acacia)\nالحالة: تحتاج ري بعد يومين\nالمكافأة: +50 نقطة نماء 🌿");
+        }
+    </script>
 </body>
 </html>
